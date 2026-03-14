@@ -1,5 +1,4 @@
 const prompts = {
-
   grammar: (text) => `
 You are a professional English teacher helping students preparing for IELTS and TOEFL exams.
 
@@ -57,19 +56,21 @@ Topic: ${text}
 `,
 
   essay: (text) => `
-Evaluate this IELTS-style essay.
+You are an IELTS writing examiner.
+
+Evaluate the following essay.
 
 Return format:
 
 Estimated Band Score:
-Grammar Feedback:
-Vocabulary Feedback:
+Grammar Score:
+Vocabulary Score:
+Coherence Score:
 Suggestions for Improvement:
 
 Essay:
 ${text}
-`
-
+`,
 };
 
 export default prompts;
