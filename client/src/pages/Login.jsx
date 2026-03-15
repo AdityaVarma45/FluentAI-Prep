@@ -3,38 +3,65 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
+
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
+
     if (!email || !password) {
       alert("Please enter email and password");
       return;
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
-      });
 
-      localStorage.setItem("token", res.data.token);
+      setLoading(true);
+
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email,
+          password
+        }
+      );
+
+      const token = res.data.token;
+
+      localStorage.setItem("token", token);
 
       alert("Login successful");
 
-      navigate("/");
+      navigate("/app");
+
     } catch (error) {
+
       console.log(error.response?.data || error.message);
-      alert("Login failed");
+
+      alert(
+        error.response?.data?.error || "Login failed"
+      );
+
+    } finally {
+
+      setLoading(false);
+
     }
+
   };
 
   return (
+
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+
       <div className="bg-white p-8 rounded shadow-md w-80">
-        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+
+        <h1 className="text-2xl font-bold mb-6 text-center">
+          Login
+        </h1>
 
         <input
           type="email"
@@ -54,18 +81,28 @@ export default function Login() {
 
         <button
           onClick={handleLogin}
-          className="bg-blue-600 text-white w-full py-2 rounded"
+          disabled={loading}
+          className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700"
         >
-          Login
+          {loading ? "Logging in..." : "Login"}
         </button>
 
         <p className="text-sm text-center mt-4">
+
           Don't have an account?{" "}
-          <Link to="/register" className="text-blue-600">
+
+          <Link
+            to="/register"
+            className="text-blue-600 hover:underline"
+          >
             Register
           </Link>
+
         </p>
+
       </div>
+
     </div>
+
   );
 }
