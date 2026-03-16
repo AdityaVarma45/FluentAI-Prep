@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
-import VocabularyBar from "./components/VocabularyBar";
 
 import Welcome from "./pages/Welcome";
 import Home from "./pages/Home";
@@ -18,10 +17,6 @@ function App() {
       {/* Global Header */}
 
       <Header />
-
-      {/* Vocabulary Bar */}
-
-      <VocabularyBar />
 
       {/* Routes */}
 
