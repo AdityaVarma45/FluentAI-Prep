@@ -10,7 +10,17 @@ export default function Profile() {
   const [stats, setStats] = useState({
     history: 0,
     bookmarks: 0,
+    grammar: 0,
+    essay: 0,
+    vocabulary: 0,
+    paraphrase: 0,
   });
+
+  const [streak, setStreak] = useState(1);
+
+  const email = localStorage.getItem("email") || "User";
+
+  const avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${email}`;
 
   useEffect(() => {
     const loadStats = async () => {
@@ -29,10 +39,21 @@ export default function Profile() {
           },
         );
 
+        const history = historyRes.data;
+
         setStats({
-          history: historyRes.data.length,
+          history: history.length,
           bookmarks: bookmarkRes.data.length,
+          grammar: history.filter((i) => i.tool === "grammar").length,
+          essay: history.filter((i) => i.tool === "essay").length,
+          vocabulary: history.filter((i) => i.tool === "vocabulary").length,
+          paraphrase: history.filter((i) => i.tool === "paraphrase").length,
         });
+
+        // simple streak logic
+        if (history.length > 0) {
+          setStreak(Math.min(history.length, 7));
+        }
       } catch (err) {
         console.log(err);
       }
@@ -50,51 +71,92 @@ export default function Profile() {
     <div className="min-h-screen bg-gray-100">
       <Header />
 
-      <div className="max-w-5xl mx-auto p-8">
-        <h1 className="text-3xl font-bold mb-8">Profile Dashboard</h1>
+      <div className="max-w-6xl mx-auto p-8">
+        {/* Profile Header */}
 
-        {/* Stats Cards */}
+        <div className="flex items-center gap-6 mb-10">
+          <img
+            src={avatar}
+            alt="avatar"
+            className="w-16 h-16 rounded-full border"
+          />
 
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <div>
+            <h1 className="text-3xl font-bold">Profile Dashboard</h1>
+
+            <p className="text-gray-500">Track your AI learning progress</p>
+          </div>
+        </div>
+
+        {/* Main Stats */}
+
+        <div className="grid md:grid-cols-3 gap-6 mb-10">
           <div
             onClick={() => navigate("/history")}
-            className="bg-white p-6 rounded-xl shadow cursor-pointer hover:shadow-lg transition"
+            className="bg-white p-6 rounded-xl shadow hover:shadow-lg cursor-pointer transition"
           >
-            <h2 className="text-xl font-semibold">AI History</h2>
+            <h2 className="text-lg font-semibold">AI History</h2>
 
             <p className="text-3xl font-bold mt-2">{stats.history}</p>
 
-            <p className="text-gray-500">Analyses performed</p>
+            <p className="text-gray-500">Total analyses</p>
           </div>
 
           <div
             onClick={() => navigate("/bookmarks")}
-            className="bg-white p-6 rounded-xl shadow cursor-pointer hover:shadow-lg transition"
+            className="bg-white p-6 rounded-xl shadow hover:shadow-lg cursor-pointer transition"
           >
-            <h2 className="text-xl font-semibold">Bookmarks</h2>
+            <h2 className="text-lg font-semibold">Bookmarks</h2>
 
             <p className="text-3xl font-bold mt-2">{stats.bookmarks}</p>
 
-            <p className="text-gray-500">Saved AI answers</p>
+            <p className="text-gray-500">Saved AI responses</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow">
+            <h2 className="text-lg font-semibold">Learning Streak</h2>
+
+            <p className="text-3xl font-bold mt-2">{streak} days</p>
+
+            <p className="text-gray-500">Keep practicing daily</p>
           </div>
         </div>
 
-        {/* Extra ideas */}
+        {/* Tool Usage Stats */}
 
-        <div className="grid md:grid-cols-2 gap-6 mb-10">
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="font-semibold text-lg">Learning Tip</h2>
-            <p className="text-gray-600 mt-2">
-              Try evaluating essays daily to improve IELTS writing score.
-            </p>
+        <h2 className="text-2xl font-bold mb-6">Tool Usage</h2>
+
+        <div className="grid md:grid-cols-4 gap-6 mb-10">
+          <div className="bg-white p-5 rounded-xl shadow">
+            <h3 className="font-semibold">Grammar</h3>
+            <p className="text-2xl font-bold">{stats.grammar}</p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="font-semibold text-lg">AI Engine</h2>
-            <p className="text-gray-600 mt-2">
-              FluentAI Prep uses multiple AI providers for reliable answers.
-            </p>
+          <div className="bg-white p-5 rounded-xl shadow">
+            <h3 className="font-semibold">Essay</h3>
+            <p className="text-2xl font-bold">{stats.essay}</p>
           </div>
+
+          <div className="bg-white p-5 rounded-xl shadow">
+            <h3 className="font-semibold">Vocabulary</h3>
+            <p className="text-2xl font-bold">{stats.vocabulary}</p>
+          </div>
+
+          <div className="bg-white p-5 rounded-xl shadow">
+            <h3 className="font-semibold">Paraphrase</h3>
+            <p className="text-2xl font-bold">{stats.paraphrase}</p>
+          </div>
+        </div>
+
+        {/* Learning Tips */}
+
+        <div className="bg-white p-6 rounded-xl shadow mb-8">
+          <h2 className="text-lg font-semibold mb-2">Learning Tip</h2>
+
+          <p className="text-gray-600">
+            Practice essay evaluation regularly to improve your IELTS writing
+            band score.
+          </p>
         </div>
 
         {/* Logout */}

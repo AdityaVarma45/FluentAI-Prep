@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -23,7 +24,9 @@ export default function Login() {
         password,
       });
 
+      // Save auth info
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("email", email);
 
       alert("Login successful");
 
@@ -38,40 +41,44 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-80">
-        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+    <div className="min-h-screen bg-gray-100">
+      <Header />
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="border p-3 w-full mb-3 rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <div className="flex items-center justify-center p-8">
+        <div className="bg-white p-8 rounded-xl shadow-md w-96">
+          <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="border p-3 w-full mb-4 rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <input
+            type="email"
+            placeholder="Email"
+            className="border p-3 w-full mb-3 rounded"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <button
-          onClick={handleLogin}
-          disabled={loading}
-          className="bg-blue-600 text-white w-full py-2 rounded"
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
+          <input
+            type="password"
+            placeholder="Password"
+            className="border p-3 w-full mb-4 rounded"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <p className="text-sm text-center mt-4">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-blue-600">
-            Register
-          </Link>
-        </p>
+          <button
+            onClick={handleLogin}
+            disabled={loading}
+            className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700"
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+
+          <p className="text-sm text-center mt-4">
+            Don't have an account?{" "}
+            <Link to="/register" className="text-blue-600 hover:underline">
+              Register
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
