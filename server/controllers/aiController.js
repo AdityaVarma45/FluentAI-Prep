@@ -1,6 +1,7 @@
 import prompts from "../utils/promptTemplates.js";
 import { askAI } from "../services/aiService.js";
 import History from "../models/History.js";
+import jwt from "jsonwebtoken";
 
 export const analyzeText = async (req, res) => {
   try {
@@ -22,24 +23,22 @@ export const analyzeText = async (req, res) => {
 
     const aiResponse = await askAI(prompt);
 
-    // Save history only if user logged in
+    // Save history if logged in
     if (req.headers.authorization) {
-      const token = req.headers.authorization.split(" ")[1];
-
       try {
-        const decoded = JSON.parse(
-          Buffer.from(token.split(".")[1], "base64").toString(),
-        );
+        const token = req.headers.authorization.split(" ")[1];
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         await History.create({
-          userId: decoded.id,
+          user: decoded.id,
           tool,
           inputText: text,
           result: aiResponse.text,
           provider: aiResponse.provider,
         });
       } catch (err) {
-        console.log("History not saved (demo mode)");
+        console.log("History save skipped (demo mode)");
       }
     }
 

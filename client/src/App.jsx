@@ -1,5 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 
@@ -12,94 +11,34 @@ import Bookmarks from "./pages/Bookmarks";
 import Profile from "./pages/Profile";
 
 function App() {
-  const location = useLocation();
-
   return (
     <div className="min-h-screen bg-gray-100">
+
+      {/* Global Header */}
+
       <Header />
 
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route
-            path="/"
-            element={
-              <PageWrapper>
-                <Welcome />
-              </PageWrapper>
-            }
-          />
+      {/* Routes */}
 
-          <Route
-            path="/app"
-            element={
-              <PageWrapper>
-                <Home />
-              </PageWrapper>
-            }
-          />
+      <Routes>
 
-          <Route
-            path="/login"
-            element={
-              <PageWrapper>
-                <Login />
-              </PageWrapper>
-            }
-          />
+        <Route path="/" element={<Welcome />} />
 
-          <Route
-            path="/register"
-            element={
-              <PageWrapper>
-                <Register />
-              </PageWrapper>
-            }
-          />
+        <Route path="/app" element={<Home />} />
 
-          <Route
-            path="/history"
-            element={
-              <PageWrapper>
-                <History />
-              </PageWrapper>
-            }
-          />
+        <Route path="/login" element={<Login />} />
 
-          <Route
-            path="/bookmarks"
-            element={
-              <PageWrapper>
-                <Bookmarks />
-              </PageWrapper>
-            }
-          />
+        <Route path="/register" element={<Register />} />
 
-          <Route
-            path="/profile"
-            element={
-              <PageWrapper>
-                <Profile />
-              </PageWrapper>
-            }
-          />
-        </Routes>
-      </AnimatePresence>
+        <Route path="/history" element={<History />} />
+
+        <Route path="/bookmarks" element={<Bookmarks />} />
+
+        <Route path="/profile" element={<Profile />} />
+
+      </Routes>
+
     </div>
-  );
-}
-
-/* Animation Wrapper */
-
-function PageWrapper({ children }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.25 }}
-    >
-      {children}
-    </motion.div>
   );
 }
 

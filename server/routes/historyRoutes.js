@@ -7,11 +7,15 @@ const router = express.Router();
 /* GET HISTORY */
 
 router.get("/", authMiddleware, async (req, res) => {
-  const history = await History.find({
-    user: req.user.id,
-  }).sort({ createdAt: -1 });
+  try {
+    const history = await History.find({ user: req.user.id })
+      .sort({ createdAt: -1 })
+      .lean();
 
-  res.json(history);
+    res.json(history);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch history" });
+  }
 });
 
 /* DELETE SINGLE */

@@ -7,26 +7,38 @@ const router = express.Router();
 /* GET BOOKMARKS */
 
 router.get("/", authMiddleware, async (req, res) => {
-  const bookmarks = await Bookmark.find({
-    user: req.user.id,
-  }).sort({ createdAt: -1 });
+  try {
+    const bookmarks = await Bookmark.find({ user: req.user.id }).sort({
+      createdAt: -1,
+    });
 
-  res.json(bookmarks);
+    res.json(bookmarks);
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to fetch bookmarks",
+    });
+  }
 });
 
 /* ADD BOOKMARK */
 
 router.post("/", authMiddleware, async (req, res) => {
-  const { tool, inputText, result } = req.body;
+  try {
+    const { tool, inputText, result } = req.body;
 
-  const bookmark = await Bookmark.create({
-    user: req.user.id,
-    tool,
-    inputText,
-    result,
-  });
+    const bookmark = await Bookmark.create({
+      user: req.user.id,
+      tool,
+      inputText,
+      result,
+    });
 
-  res.json(bookmark);
+    res.json(bookmark);
+  } catch (error) {
+    res.status(500).json({
+      error: "Bookmark creation failed",
+    });
+  }
 });
 
 /* DELETE SINGLE */

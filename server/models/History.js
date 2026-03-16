@@ -2,9 +2,10 @@ import mongoose from "mongoose";
 
 const historySchema = new mongoose.Schema(
   {
-    userId: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
 
     tool: String,

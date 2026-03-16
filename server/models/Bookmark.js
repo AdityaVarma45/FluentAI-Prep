@@ -2,9 +2,10 @@ import mongoose from "mongoose";
 
 const bookmarkSchema = new mongoose.Schema(
   {
-    userId: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
 
     tool: String,
@@ -12,8 +13,6 @@ const bookmarkSchema = new mongoose.Schema(
     inputText: String,
 
     result: String,
-
-    provider: String,
   },
   { timestamps: true },
 );
