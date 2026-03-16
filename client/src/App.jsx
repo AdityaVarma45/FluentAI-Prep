@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import History from "./pages/History";
 import Bookmarks from "./pages/Bookmarks";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
       <Route path="/history" element={<History />} />
 
       <Route path="/bookmarks" element={<Bookmarks />} />
+
+      <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Header from "../components/Header";
 
 export default function History() {
   const [history, setHistory] = useState([]);
@@ -8,41 +9,39 @@ export default function History() {
 
   useEffect(() => {
     const loadHistory = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/history", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      const res = await axios.get("http://localhost:5000/api/history", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        setHistory(res.data);
-      } catch (error) {
-        console.log(error);
-      }
+      setHistory(res.data);
     };
 
     loadHistory();
   }, []);
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">AI History</h1>
+    <div className="min-h-screen bg-gray-100">
+      <Header />
 
-      {history.length === 0 && <p>No history yet.</p>}
+      <div className="max-w-4xl mx-auto p-8">
+        <h1 className="text-3xl font-bold mb-6">AI History</h1>
 
-      {history.map((item) => (
-        <div key={item._id} className="border p-4 rounded mb-4 bg-white">
-          <p className="text-sm text-gray-500">Tool: {item.tool}</p>
+        {history.map((item) => (
+          <div key={item._id} className="bg-white p-4 rounded shadow mb-4">
+            <p className="text-sm text-gray-500">Tool: {item.tool}</p>
 
-          <p className="font-semibold mt-1">Input:</p>
+            <p className="font-semibold mt-2">Input:</p>
 
-          <p className="mb-2">{item.inputText}</p>
+            <p>{item.inputText}</p>
 
-          <p className="font-semibold">Result:</p>
+            <p className="font-semibold mt-2">Result:</p>
 
-          <pre className="whitespace-pre-wrap">{item.result}</pre>
-        </div>
-      ))}
+            <pre className="whitespace-pre-wrap">{item.result}</pre>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

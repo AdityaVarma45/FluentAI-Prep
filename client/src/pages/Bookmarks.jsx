@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Header from "../components/Header";
 
 export default function Bookmarks() {
   const [bookmarks, setBookmarks] = useState([]);
@@ -21,22 +22,26 @@ export default function Bookmarks() {
   }, []);
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Bookmarks</h1>
+    <div className="min-h-screen bg-gray-100">
+      <Header />
 
-      {bookmarks.map((item) => (
-        <div key={item._id} className="border p-4 rounded mb-4">
-          <p className="text-sm text-gray-500">Tool: {item.tool}</p>
+      <div className="max-w-4xl mx-auto p-8">
+        <h1 className="text-3xl font-bold mb-6">Bookmarks</h1>
 
-          <p className="font-semibold">Input:</p>
+        {bookmarks.map((item) => (
+          <div key={item._id} className="bg-white p-4 rounded shadow mb-4">
+            <p className="text-sm text-gray-500">Tool: {item.tool}</p>
 
-          <p>{item.inputText}</p>
+            <p className="font-semibold">Input:</p>
 
-          <p className="font-semibold mt-2">Result:</p>
+            <p>{item.inputText}</p>
 
-          <pre>{item.result}</pre>
-        </div>
-      ))}
+            <p className="font-semibold mt-2">Result:</p>
+
+            <pre className="whitespace-pre-wrap">{item.result}</pre>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
