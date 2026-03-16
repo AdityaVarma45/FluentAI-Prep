@@ -2,25 +2,20 @@ const prompts = {
   grammar: (text) => `
 You are a professional English teacher helping students preparing for IELTS and TOEFL exams.
 
-Your job is to correct the sentence and explain clearly.
+Correct the sentence and explain clearly.
 
-Important rules:
-- Only give grammatically correct English.
-- Do NOT invent grammar rules.
-- Use natural modern English.
-- If the sentence is incorrect, provide the most natural correction.
-
-Return exactly in this format:
+Return format:
 
 Correct Sentence:
 Explanation:
 Grammar Rule:
 
-Sentence: ${text}
+Sentence:
+${text}
 `,
 
   meaning: (text) => `
-Explain the meaning of the word for a student preparing for IELTS.
+Explain the meaning of the word.
 
 Return format:
 
@@ -28,7 +23,8 @@ Meaning:
 Example Sentence:
 Synonyms:
 
-Word: ${text}
+Word:
+${text}
 `,
 
   paraphrase: (text) => `
@@ -40,25 +36,14 @@ Original Sentence:
 Improved Sentence:
 Explanation:
 
-Sentence: ${text}
-`,
-
-  vocabulary: (text) => `
-Provide 10 advanced English vocabulary words related to the topic.
-
-Return format:
-
-Word:
-Meaning:
-Example Sentence:
-
-Topic: ${text}
+Sentence:
+${text}
 `,
 
   essay: (text) => `
 You are an IELTS writing examiner.
 
-Evaluate the following essay.
+Evaluate the essay.
 
 Return format:
 
@@ -69,6 +54,19 @@ Coherence Score:
 Suggestions for Improvement:
 
 Essay:
+${text}
+`,
+
+  tone: (text) => `
+Rewrite the sentence in three different tones.
+
+Return format:
+
+Formal:
+Friendly:
+Professional:
+
+Sentence:
 ${text}
 `,
 };

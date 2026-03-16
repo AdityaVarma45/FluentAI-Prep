@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import VocabularyBar from "../components/VocabularyBar";
+import { TypeAnimation } from "react-type-animation";
+import { FaRobot, FaUserCircle, FaBookmark } from "react-icons/fa";
 
 export default function Home() {
   const token = localStorage.getItem("token");
@@ -18,6 +20,7 @@ export default function Home() {
     { id: "meaning", title: "Word Meaning" },
     { id: "paraphrase", title: "Paraphraser" },
     { id: "essay", title: "Essay Evaluator" },
+    { id: "tone", title: "Tone Changer" },
   ];
 
   useEffect(() => {
@@ -34,6 +37,10 @@ export default function Home() {
     const userMessage = {
       role: "user",
       content: text,
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
     };
 
     setMessages((prev) => [...prev, userMessage]);
@@ -53,6 +60,10 @@ export default function Home() {
       const aiMessage = {
         role: "ai",
         content: res.data.result,
+        time: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
         bookmarked: false,
       };
 
@@ -64,13 +75,48 @@ export default function Home() {
     }
   };
 
+  const saveBookmark = async (index) => {
+    if (!token) {
+      alert("Login to save bookmarks");
+      return;
+    }
+
+    const aiMsg = messages[index];
+    const userMsg = messages[index - 1];
+
+    try {
+      await axios.post(
+        "http://localhost:5000/api/bookmarks",
+        {
+          tool,
+          inputText: userMsg?.content,
+          result: aiMsg?.content,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setMessages((prev) =>
+        prev.map((msg, i) =>
+          i === index ? { ...msg, bookmarked: true } : msg,
+        ),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 pt-6">
       <VocabularyBar />
 
-      <div className="max-w-4xl mx-auto w-full p-6">
-        {/* Tools */}
-        <div className="flex gap-3 mb-6 flex-wrap">
+      <div className="max-w-4xl mx-auto w-full px-6">
+        {/* Tool Buttons */}
+
+        <div className="flex flex-wrap justify-center gap-3 mt-6 mb-6">
           {tools.map((t) => (
             <button
               key={t.id}
@@ -86,43 +132,79 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Chat */}
-        <div className="bg-white rounded-xl shadow p-6 h-[420px] overflow-y-auto mb-6">
-          {messages.length === 0 && (
-            <p className="text-gray-400 text-center mt-10">
-              Start a conversation with AI
-            </p>
-          )}
+        {/* Chat appears only after first message */}
 
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`mb-4 ${
-                msg.role === "user" ? "text-right" : "text-left"
-              }`}
-            >
-              <div
-                className={`inline-block p-3 rounded-lg max-w-lg ${
-                  msg.role === "user" ? "bg-blue-600 text-white" : "bg-gray-100"
-                }`}
-              >
-                <pre className="whitespace-pre-wrap">{msg.content}</pre>
+        {messages.length > 0 && (
+          <div className="bg-white rounded-xl shadow h-[420px] overflow-y-auto p-6 mb-24">
+            {messages.map((msg, index) => (
+              <div key={index} className="flex gap-3 mb-5">
+                <div className="text-xl text-gray-500 mt-1">
+                  {msg.role === "user" ? <FaUserCircle /> : <FaRobot />}
+                </div>
+
+                <div className="flex-1">
+                  <div
+                    className={`inline-block p-3 rounded-lg max-w-lg ${
+                      msg.role === "user"
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-100"
+                    }`}
+                  >
+                    {msg.role === "ai" ? (
+                      <TypeAnimation
+                        sequence={[msg.content]}
+                        speed={70}
+                        cursor={false}
+                        wrapper="span"
+                        style={{ whiteSpace: "pre-wrap" }}
+                      />
+                    ) : (
+                      <pre className="whitespace-pre-wrap">{msg.content}</pre>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-4 mt-1 text-xs text-gray-400">
+                    <span>{msg.time}</span>
+
+                    {msg.role === "ai" &&
+                      token &&
+                      (!msg.bookmarked ? (
+                        <button
+                          onClick={() => saveBookmark(index)}
+                          className="flex items-center gap-1 text-yellow-600"
+                        >
+                          <FaBookmark />
+                          Save
+                        </button>
+                      ) : (
+                        <span className="text-green-600">Bookmarked ✓</span>
+                      ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
 
-          {loading && (
-            <div className="animate-pulse">
-              <div className="bg-gray-200 h-4 w-2/3 mb-2 rounded"></div>
-              <div className="bg-gray-200 h-4 w-1/2 rounded"></div>
-            </div>
-          )}
+            {loading && (
+              <div className="text-gray-400 text-sm italic">
+                AI is typing...
+              </div>
+            )}
 
-          <div ref={chatEndRef} />
-        </div>
+            <div ref={chatEndRef} />
+          </div>
+        )}
+      </div>
 
-        {/* Input */}
-        <div className="flex gap-3">
+      {/* Input Bar */}
+
+      <div
+        className={`${
+          messages.length === 0
+            ? "max-w-3xl mx-auto mt-20"
+            : "fixed bottom-0 left-0 right-0 bg-white border-t"
+        }`}
+      >
+        <div className="max-w-4xl mx-auto p-4 flex gap-3">
           <input
             className="flex-1 border p-3 rounded"
             placeholder="Ask AI..."
