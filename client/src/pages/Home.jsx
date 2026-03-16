@@ -15,7 +15,6 @@ export default function Home() {
     { id: "grammar", title: "Grammar Checker" },
     { id: "meaning", title: "Word Meaning" },
     { id: "paraphrase", title: "Paraphraser" },
-    { id: "vocabulary", title: "Vocabulary Builder" },
     { id: "essay", title: "Essay Evaluator" },
   ];
 

@@ -8,6 +8,7 @@ import aiRoutes from "./routes/aiRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import historyRoutes from "./routes/historyRoutes.js";
 import bookmarkRoutes from "./routes/bookmarkRoutes.js";
+import vocabularyRoutes from "./routes/vocabularyRoutes.js";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use("/api/ai", aiRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/history", historyRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
+app.use("/api/vocabulary", vocabularyRoutes);
 
 const PORT = process.env.PORT || 5000;
 
