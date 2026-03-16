@@ -9,11 +9,14 @@ export default function Home() {
   const [text, setText] = useState("");
   const [tool, setTool] = useState("grammar");
   const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     if (!text.trim()) return;
 
     try {
+      setLoading(true);
+
       const res = await axios.post(
         "http://localhost:5000/api/ai/analyze",
         { tool, text },
@@ -24,7 +27,40 @@ export default function Home() {
 
       setResult(res.data.result);
     } catch (error) {
+      console.log(error.response?.data || error.message);
+
+      alert("AI request failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const saveBookmark = async () => {
+    if (!token) {
+      alert("Login to save bookmarks");
+      return;
+    }
+
+    try {
+      await axios.post(
+        "http://localhost:5000/api/bookmarks",
+        {
+          tool,
+          inputText: text,
+          result,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      alert("Bookmark saved ⭐");
+    } catch (error) {
       console.log(error);
+
+      alert("Failed to save bookmark");
     }
   };
 
@@ -35,7 +71,7 @@ export default function Home() {
       <div className="flex-1 p-8">
         {!token && (
           <div className="bg-yellow-100 p-3 rounded mb-4">
-            You're using Demo Mode. Login to save history and bookmarks.
+            You are using Demo Mode. Login to save history and bookmarks.
           </div>
         )}
 
@@ -51,12 +87,19 @@ export default function Home() {
           onClick={handleSubmit}
           className="bg-blue-600 text-white px-6 py-2 rounded"
         >
-          Analyze
+          {loading ? "Analyzing..." : "Analyze"}
         </button>
 
         {result && (
           <div className="mt-6 p-4 bg-gray-50 border rounded">
-            <pre>{result}</pre>
+            <pre className="whitespace-pre-wrap">{result}</pre>
+
+            <button
+              onClick={saveBookmark}
+              className="bg-yellow-500 text-white px-4 py-2 rounded mt-4"
+            >
+              Bookmark ⭐
+            </button>
           </div>
         )}
       </div>

@@ -4,6 +4,8 @@ import Welcome from "./pages/Welcome";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import History from "./pages/History";
+import Bookmarks from "./pages/Bookmarks";
 
 function App() {
   return (
@@ -15,6 +17,10 @@ function App() {
       <Route path="/login" element={<Login />} />
 
       <Route path="/register" element={<Register />} />
+
+      <Route path="/history" element={<History />} />
+
+      <Route path="/bookmarks" element={<Bookmarks />} />
     </Routes>
   );
 }
