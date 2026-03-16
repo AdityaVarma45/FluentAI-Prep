@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Header from "../components/Header";
 
 export default function History() {
   const [history, setHistory] = useState([]);
@@ -30,7 +29,6 @@ export default function History() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Header />
 
       <div className="max-w-4xl mx-auto p-8">
         <h1 className="text-3xl font-bold mb-6">AI History</h1>

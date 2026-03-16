@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
+import Header from "./components/Header";
+
 import Welcome from "./pages/Welcome";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -10,21 +12,27 @@ import Profile from "./pages/Profile";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Welcome />} />
+    <div className="min-h-screen bg-gray-100">
+      {/* Persistent Header */}
 
-      <Route path="/app" element={<Home />} />
+      <Header />
 
-      <Route path="/login" element={<Login />} />
+      <Routes>
+        <Route path="/" element={<Welcome />} />
 
-      <Route path="/register" element={<Register />} />
+        <Route path="/app" element={<Home />} />
 
-      <Route path="/history" element={<History />} />
+        <Route path="/login" element={<Login />} />
 
-      <Route path="/bookmarks" element={<Bookmarks />} />
+        <Route path="/register" element={<Register />} />
 
-      <Route path="/profile" element={<Profile />} />
-    </Routes>
+        <Route path="/history" element={<History />} />
+
+        <Route path="/bookmarks" element={<Bookmarks />} />
+
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
+    </div>
   );
 }
 

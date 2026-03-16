@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -72,7 +71,6 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Header />
 
       <div className="max-w-6xl mx-auto p-8">
         <div className="flex items-center gap-6 mb-10">

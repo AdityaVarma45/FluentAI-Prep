@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 
 export default function Bookmarks() {
   const [bookmarks, setBookmarks] = useState([]);
@@ -32,7 +31,6 @@ export default function Bookmarks() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Header />
 
       <div className="max-w-5xl mx-auto p-8">
         <h1 className="text-3xl font-bold mb-6">Bookmarks</h1>

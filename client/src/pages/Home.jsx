@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import Header from "../components/Header";
 
 export default function Home() {
   const token = localStorage.getItem("token");
@@ -72,7 +71,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Header />
 
       <div className="max-w-6xl mx-auto p-8">
         <h1 className="text-4xl font-bold text-center mb-10">

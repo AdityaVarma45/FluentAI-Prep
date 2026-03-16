@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -36,7 +35,6 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Header />
 
       <div className="flex items-center justify-center p-8">
         <form
