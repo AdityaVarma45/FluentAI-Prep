@@ -2,36 +2,18 @@ import { Link } from "react-router-dom";
 
 export default function Welcome() {
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* Navbar */}
-
-      <div className="flex justify-between items-center px-10 py-6 bg-white shadow">
-        <h1 className="text-2xl font-bold text-blue-600">FluentAI Prep</h1>
-
-        <div className="flex gap-4">
-          <Link to="/login" className="text-blue-600">
-            Login
-          </Link>
-
-          <Link
-            to="/register"
-            className="bg-blue-600 text-white px-4 py-2 rounded"
-          >
-            Register
-          </Link>
-        </div>
-      </div>
-
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
       {/* Hero Section */}
 
-      <div className="flex flex-col items-center justify-center flex-1 text-center px-6">
-        <h2 className="text-5xl font-bold mb-6">Master English with AI</h2>
+      <div className="flex flex-col items-center justify-center text-center px-6 pt-24 pb-20">
+        <h1 className="text-5xl md:text-6xl font-bold mb-6 text-gray-900">
+          Master English with <span className="text-blue-600">AI</span>
+        </h1>
 
-        <p className="text-gray-600 text-lg max-w-2xl mb-8">
-          FluentAI Prep is an AI-powered learning platform designed for students
-          preparing for international English exams like IELTS and TOEFL.
-          Improve grammar, expand vocabulary, paraphrase sentences, and evaluate
-          essays using multiple AI models.
+        <p className="text-gray-600 text-lg max-w-2xl mb-10">
+          FluentAI Prep helps students preparing for IELTS and TOEFL improve
+          grammar, vocabulary, essay writing, and sentence clarity using
+          powerful AI models.
         </p>
 
         {/* Buttons */}
@@ -39,62 +21,80 @@ export default function Welcome() {
         <div className="flex gap-6">
           <Link
             to="/app"
-            className="bg-blue-600 text-white px-6 py-3 rounded text-lg"
+            className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg hover:bg-blue-700 transition shadow"
           >
             Start Demo
           </Link>
 
           <Link
             to="/login"
-            className="border border-blue-600 text-blue-600 px-6 py-3 rounded text-lg"
+            className="border border-blue-600 text-blue-600 px-8 py-3 rounded-lg text-lg hover:bg-blue-50 transition"
           >
             Login to Save Progress
           </Link>
         </div>
 
-        {/* Demo explanation */}
-
         <p className="text-sm text-gray-500 mt-6 max-w-xl">
           Demo mode lets you explore AI grammar correction, vocabulary
-          generation, and essay evaluation without creating an account. Login or
-          register to save your learning history and bookmarks.
+          generation, and essay evaluation without creating an account.
         </p>
       </div>
 
-      {/* Feature Section */}
+      {/* Features */}
 
-      <div className="bg-white py-16 px-10">
-        <h3 className="text-3xl font-bold text-center mb-12">Features</h3>
+      <div className="max-w-6xl mx-auto px-6 pb-24">
+        <h2 className="text-3xl font-bold text-center mb-12">
+          Powerful AI Learning Tools
+        </h2>
 
-        <div className="grid md:grid-cols-4 gap-8 text-center">
-          <div>
-            <h4 className="font-semibold text-lg mb-2">Grammar Checker</h4>
-            <p className="text-gray-600">
-              Correct sentences and understand grammar rules instantly.
+        <div className="grid md:grid-cols-4 gap-8">
+          {/* Feature 1 */}
+
+          <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+            <h3 className="font-semibold text-lg mb-2">Grammar Checker</h3>
+
+            <p className="text-gray-600 text-sm">
+              Instantly fix grammar mistakes and understand the rules behind
+              them.
             </p>
           </div>
 
-          <div>
-            <h4 className="font-semibold text-lg mb-2">Vocabulary Builder</h4>
-            <p className="text-gray-600">
-              Learn advanced vocabulary for IELTS and TOEFL.
+          {/* Feature 2 */}
+
+          <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+            <h3 className="font-semibold text-lg mb-2">Vocabulary Builder</h3>
+
+            <p className="text-gray-600 text-sm">
+              Discover advanced vocabulary useful for IELTS and TOEFL exams.
             </p>
           </div>
 
-          <div>
-            <h4 className="font-semibold text-lg mb-2">Essay Evaluation</h4>
-            <p className="text-gray-600">
-              Get AI estimated band scores and writing feedback.
+          {/* Feature 3 */}
+
+          <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+            <h3 className="font-semibold text-lg mb-2">Essay Evaluator</h3>
+
+            <p className="text-gray-600 text-sm">
+              Get AI-generated feedback and estimated IELTS band scores.
             </p>
           </div>
 
-          <div>
-            <h4 className="font-semibold text-lg mb-2">Multi-AI Engine</h4>
-            <p className="text-gray-600">
-              Powered by multiple AI providers for reliable responses.
+          {/* Feature 4 */}
+
+          <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+            <h3 className="font-semibold text-lg mb-2">Multi-AI Engine</h3>
+
+            <p className="text-gray-600 text-sm">
+              Uses multiple AI providers to deliver reliable responses.
             </p>
           </div>
         </div>
+      </div>
+
+      {/* Footer */}
+
+      <div className="text-center text-sm text-gray-500 pb-6">
+        Built with ❤️ using MERN + AI
       </div>
     </div>
   );
