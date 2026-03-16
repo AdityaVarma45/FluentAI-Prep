@@ -10,11 +10,10 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      alert("Please enter email and password");
-      return;
-    }
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    if (!email || !password) return;
 
     try {
       setLoading(true);
@@ -24,17 +23,13 @@ export default function Login() {
         password,
       });
 
-      // Save auth info
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("email", email);
 
-      alert("Login successful");
-
+      // redirect directly
       navigate("/app");
     } catch (error) {
       console.log(error.response?.data || error.message);
-
-      alert(error.response?.data?.error || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -45,7 +40,10 @@ export default function Login() {
       <Header />
 
       <div className="flex items-center justify-center p-8">
-        <div className="bg-white p-8 rounded-xl shadow-md w-96">
+        <form
+          onSubmit={handleLogin}
+          className="bg-white p-8 rounded-xl shadow-md w-96"
+        >
           <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
 
           <input
@@ -65,7 +63,7 @@ export default function Login() {
           />
 
           <button
-            onClick={handleLogin}
+            type="submit"
             disabled={loading}
             className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700"
           >
@@ -78,7 +76,7 @@ export default function Login() {
               Register
             </Link>
           </p>
-        </div>
+        </form>
       </div>
     </div>
   );

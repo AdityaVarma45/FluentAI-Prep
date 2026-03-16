@@ -11,11 +11,10 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleRegister = async () => {
-    if (!username || !email || !password) {
-      alert("Please fill all fields");
-      return;
-    }
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    if (!username || !email || !password) return;
 
     try {
       setLoading(true);
@@ -26,13 +25,10 @@ export default function Register() {
         password,
       });
 
-      alert("Registration successful");
-
+      // redirect to login
       navigate("/login");
     } catch (error) {
       console.log(error.response?.data || error.message);
-
-      alert(error.response?.data?.error || "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -43,7 +39,10 @@ export default function Register() {
       <Header />
 
       <div className="flex items-center justify-center p-8">
-        <div className="bg-white p-8 rounded-xl shadow-md w-96">
+        <form
+          onSubmit={handleRegister}
+          className="bg-white p-8 rounded-xl shadow-md w-96"
+        >
           <h1 className="text-2xl font-bold mb-6 text-center">Register</h1>
 
           <input
@@ -71,7 +70,7 @@ export default function Register() {
           />
 
           <button
-            onClick={handleRegister}
+            type="submit"
             disabled={loading}
             className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700"
           >
@@ -84,7 +83,7 @@ export default function Register() {
               Login
             </Link>
           </p>
-        </div>
+        </form>
       </div>
     </div>
   );
