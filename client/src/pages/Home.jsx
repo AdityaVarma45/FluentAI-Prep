@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import VocabularyBar from "../components/VocabularyBar";
-import { TypeAnimation } from "react-type-animation";
 import { FaRobot, FaUserCircle, FaBookmark } from "react-icons/fa";
 
 export default function Home() {
@@ -11,9 +10,13 @@ export default function Home() {
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState(null);
 
   const chatEndRef = useRef(null);
   const prevMessageCount = useRef(0);
+  const inputRef = useRef(null);
+
+  /* TOOLS */
 
   const tools = [
     { id: "grammar", title: "Grammar Checker" },
@@ -23,13 +26,84 @@ export default function Home() {
     { id: "tone", title: "Tone Changer" },
   ];
 
+  /* TOOL DESCRIPTIONS */
+
+  const toolDescriptions = {
+    grammar: "Fix grammar mistakes and understand the rules behind them.",
+    meaning: "Learn meanings, examples, and synonyms instantly.",
+    paraphrase: "Rewrite sentences in a more natural and professional way.",
+    essay: "Get IELTS-style feedback with band score estimation.",
+    tone: "Convert sentences into formal, friendly, or professional tone.",
+  };
+
+  /* PLACEHOLDERS */
+
+  const toolPlaceholders = {
+    grammar: "Enter a sentence to fix grammar...",
+    meaning: "Enter a word to get meaning...",
+    paraphrase: "Enter a sentence to rewrite...",
+    essay: "Paste your essay for evaluation...",
+    tone: "Enter a sentence to change tone...",
+  };
+
+  /* AUTO SCROLL */
+
   useEffect(() => {
     if (messages.length > prevMessageCount.current) {
       chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-
     prevMessageCount.current = messages.length;
   }, [messages]);
+
+  /* AUTO FOCUS */
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [tool]);
+
+  /* COPY */
+
+  const handleCopy = (text, index) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIndex(index);
+
+    setTimeout(() => {
+      setCopiedIndex(null);
+    }, 1500);
+  };
+
+  /* CLEAN FORMAT */
+
+  const formatCleanText = (text) => {
+    return text
+      .replace(/Correct Sentence:\s*/gi, "")
+      .replace(/Explanation:\s*/gi, "")
+      .replace(/Grammar Rule:\s*/gi, "")
+      .replace(/Meaning:\s*/gi, "")
+      .replace(/Example Sentence:\s*/gi, "")
+      .replace(/Synonyms:\s*/gi, "")
+      .replace(/Original Sentence:\s*/gi, "")
+      .replace(/Improved Sentence:\s*/gi, "")
+      .replace(/Estimated Band Score:\s*/gi, "")
+      .replace(/Grammar Score:\s*/gi, "")
+      .replace(/Vocabulary Score:\s*/gi, "")
+      .replace(/Coherence Score:\s*/gi, "")
+      .replace(/Suggestions for Improvement:\s*/gi, "")
+      .trim();
+  };
+
+  const handleCleanCopy = (text, index) => {
+    const cleaned = formatCleanText(text);
+    navigator.clipboard.writeText(cleaned);
+
+    setCopiedIndex(index);
+
+    setTimeout(() => {
+      setCopiedIndex(null);
+    }, 1500);
+  };
+
+  /* SEND MESSAGE */
 
   const handleSubmit = async () => {
     if (!text.trim()) return;
@@ -57,9 +131,11 @@ export default function Home() {
         },
       );
 
+      const fullText = res.data.result;
+
       const aiMessage = {
         role: "ai",
-        content: res.data.result,
+        content: "",
         time: new Date().toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
@@ -68,6 +144,23 @@ export default function Home() {
       };
 
       setMessages((prev) => [...prev, aiMessage]);
+
+      const words = fullText.split(" ");
+      let index = 0;
+
+      const interval = setInterval(() => {
+        index++;
+
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1].content = words.slice(0, index).join(" ");
+          return updated;
+        });
+
+        if (index >= words.length) {
+          clearInterval(interval);
+        }
+      }, 40);
     } catch (error) {
       console.log(error);
     } finally {
@@ -75,11 +168,10 @@ export default function Home() {
     }
   };
 
+  /* SAVE BOOKMARK */
+
   const saveBookmark = async (index) => {
-    if (!token) {
-      alert("Login to save bookmarks");
-      return;
-    }
+    if (!token) return alert("Login to save bookmarks");
 
     const aiMsg = messages[index];
     const userMsg = messages[index - 1];
@@ -114,17 +206,15 @@ export default function Home() {
       <VocabularyBar />
 
       <div className="max-w-4xl mx-auto w-full px-6">
-        {/* Tool Buttons */}
+        {/* TOOLS */}
 
-        <div className="flex flex-wrap justify-center gap-3 mt-6 mb-6">
+        <div className="flex flex-wrap justify-center gap-3 mt-6 mb-4">
           {tools.map((t) => (
             <button
               key={t.id}
               onClick={() => setTool(t.id)}
-              className={`px-4 py-2 rounded transition ${
-                tool === t.id
-                  ? "bg-blue-600 text-white"
-                  : "bg-white border hover:bg-gray-50"
+              className={`px-4 py-2 rounded ${
+                tool === t.id ? "bg-blue-600 text-white" : "bg-white border"
               }`}
             >
               {t.title}
@@ -132,54 +222,82 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Chat appears only after first message */}
+        {/* DESCRIPTION */}
+
+        {messages.length === 0 && (
+          <div className="text-center mb-10">
+            <p className="text-gray-500 text-sm">{toolDescriptions[tool]}</p>
+          </div>
+        )}
+
+        {/* CHAT */}
 
         {messages.length > 0 && (
-          <div className="bg-white rounded-xl shadow h-[420px] overflow-y-auto p-6 mb-24">
+          <div className="bg-gray-50 rounded-xl shadow h-[420px] overflow-y-auto p-6 mb-24">
             {messages.map((msg, index) => (
-              <div key={index} className="flex gap-3 mb-5">
-                <div className="text-xl text-gray-500 mt-1">
-                  {msg.role === "user" ? <FaUserCircle /> : <FaRobot />}
-                </div>
+              <div
+                key={index}
+                className={`flex w-full mb-6 ${
+                  msg.role === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
+                <div className="flex items-start gap-3 max-w-[75%]">
+                  {msg.role === "ai" && (
+                    <FaRobot className="text-blue-600 text-xl mt-1" />
+                  )}
 
-                <div className="flex-1">
-                  <div
-                    className={`inline-block p-3 rounded-lg max-w-lg ${
-                      msg.role === "user"
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-100"
-                    }`}
-                  >
-                    {msg.role === "ai" ? (
-                      <TypeAnimation
-                        sequence={[msg.content]}
-                        speed={70}
-                        cursor={false}
-                        wrapper="span"
-                        style={{ whiteSpace: "pre-wrap" }}
-                      />
-                    ) : (
-                      <pre className="whitespace-pre-wrap">{msg.content}</pre>
-                    )}
+                  <div>
+                    <div
+                      className={`px-4 py-3 rounded-2xl shadow-sm ${
+                        msg.role === "user"
+                          ? "bg-blue-600 text-white"
+                          : "bg-white border"
+                      }`}
+                    >
+                      <span className="whitespace-pre-wrap">{msg.content}</span>
+                    </div>
+
+                    {/* META */}
+
+                    <div className="text-xs text-gray-400 mt-1 flex gap-4 items-center">
+                      <span>{msg.time}</span>
+
+                      {msg.role === "ai" && (
+                        <>
+                          <button
+                            onClick={() => handleCopy(msg.content, index)}
+                            className="text-blue-600 hover:text-blue-700"
+                          >
+                            {copiedIndex === index ? "Copied ✓" : "Copy"}
+                          </button>
+
+                          <button
+                            onClick={() => handleCleanCopy(msg.content, index)}
+                            className="text-purple-600 hover:text-purple-700"
+                          >
+                            Clean Copy
+                          </button>
+
+                          {token &&
+                            (!msg.bookmarked ? (
+                              <button
+                                onClick={() => saveBookmark(index)}
+                                className="flex items-center gap-1 text-yellow-600"
+                              >
+                                <FaBookmark />
+                                Save
+                              </button>
+                            ) : (
+                              <span className="text-green-600">Saved ✓</span>
+                            ))}
+                        </>
+                      )}
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-4 mt-1 text-xs text-gray-400">
-                    <span>{msg.time}</span>
-
-                    {msg.role === "ai" &&
-                      token &&
-                      (!msg.bookmarked ? (
-                        <button
-                          onClick={() => saveBookmark(index)}
-                          className="flex items-center gap-1 text-yellow-600"
-                        >
-                          <FaBookmark />
-                          Save
-                        </button>
-                      ) : (
-                        <span className="text-green-600">Bookmarked ✓</span>
-                      ))}
-                  </div>
+                  {msg.role === "user" && (
+                    <FaUserCircle className="text-gray-500 text-xl mt-1" />
+                  )}
                 </div>
               </div>
             ))}
@@ -195,7 +313,7 @@ export default function Home() {
         )}
       </div>
 
-      {/* Input Bar */}
+      {/* INPUT */}
 
       <div
         className={`${
@@ -206,18 +324,17 @@ export default function Home() {
       >
         <div className="max-w-4xl mx-auto p-4 flex gap-3">
           <input
+            ref={inputRef}
             className="flex-1 border p-3 rounded"
-            placeholder="Ask AI..."
+            placeholder={toolPlaceholders[tool]}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleSubmit();
-            }}
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
           />
 
           <button
             onClick={handleSubmit}
-            className="bg-blue-600 text-white px-6 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white px-6 rounded"
           >
             Send
           </button>
