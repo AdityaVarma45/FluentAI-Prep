@@ -38,37 +38,34 @@ export default function VocabularyBar() {
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto w-full px-6">
-      <div className="bg-white rounded-xl shadow p-6">
-        {/* Header */}
-
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-2 text-gray-700 font-semibold">
-            <FaBookOpen className="text-blue-600" />
-
-            <span>Vocabulary Boost</span>
+    <div className="max-w-4xl mx-auto w-full px-6 mt-6">
+      <div className="glass rounded-xl p-6 shadow-lg">
+        <div className="flex justify-between items-center mb-5">
+          <div className="flex items-center gap-2 text-gray-300 font-semibold">
+            <FaBookOpen className="text-indigo-400" />
+            Vocabulary Boost
           </div>
 
           <button
             onClick={fetchVocabulary}
-            className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700"
+            className="flex items-center gap-2 text-indigo-400 hover:text-indigo-300"
           >
             <FaSyncAlt className={loading ? "animate-spin" : ""} />
             Refresh
           </button>
         </div>
 
-        {/* Cards */}
-
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {words.map((word, index) => (
+          {words.map((word, i) => (
             <div
-              key={index}
-              className="bg-gray-50 p-5 rounded-lg hover:bg-gray-100 transition"
+              key={i}
+              className="bg-white/5 border border-white/10 p-4 rounded-lg hover:bg-white/10 transition"
             >
-              <h3 className="font-semibold text-blue-600 mb-2">{word.word}</h3>
+              <h3 className="text-indigo-400 font-semibold mb-1">
+                {word.word}
+              </h3>
 
-              <p className="text-sm text-gray-600">{word.meaning}</p>
+              <p className="text-sm text-gray-400">{word.meaning}</p>
             </div>
           ))}
         </div>

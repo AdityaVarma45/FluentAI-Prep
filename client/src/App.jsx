@@ -12,32 +12,18 @@ import Profile from "./pages/Profile";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100">
-
-      {/* Global Header */}
-
+    <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#020617] to-black">
       <Header />
 
-      {/* Routes */}
-
       <Routes>
-
         <Route path="/" element={<Welcome />} />
-
         <Route path="/app" element={<Home />} />
-
         <Route path="/login" element={<Login />} />
-
         <Route path="/register" element={<Register />} />
-
         <Route path="/history" element={<History />} />
-
         <Route path="/bookmarks" element={<Bookmarks />} />
-
         <Route path="/profile" element={<Profile />} />
-
       </Routes>
-
     </div>
   );
 }

@@ -6,17 +6,17 @@ export default function Header() {
   const location = useLocation();
 
   return (
-    <header className="bg-white border-b sticky top-0 z-50 shadow-sm">
+    <header className="glass sticky top-0 z-50 backdrop-blur-xl border-b border-white/10">
       <div className="max-w-6xl mx-auto flex justify-between items-center px-6 py-4">
-        <Link to="/app" className="text-2xl font-bold text-blue-600">
-          FluentAI Prep
+        <Link to="/app" className="text-2xl font-bold text-indigo-400">
+          FluentAI
         </Link>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 text-gray-300">
           <Link
             to="/app"
-            className={`flex items-center gap-2 hover:text-blue-600 transition ${
-              location.pathname === "/app" ? "text-blue-600 font-semibold" : ""
+            className={`flex items-center gap-2 hover:text-indigo-400 transition ${
+              location.pathname === "/app" ? "text-indigo-400" : ""
             }`}
           >
             <FaHome />
@@ -27,10 +27,8 @@ export default function Header() {
             <>
               <Link
                 to="/bookmarks"
-                className={`flex items-center gap-2 hover:text-blue-600 transition ${
-                  location.pathname === "/bookmarks"
-                    ? "text-blue-600 font-semibold"
-                    : ""
+                className={`flex items-center gap-2 hover:text-indigo-400 ${
+                  location.pathname === "/bookmarks" ? "text-indigo-400" : ""
                 }`}
               >
                 <FaBookmark />
@@ -39,10 +37,8 @@ export default function Header() {
 
               <Link
                 to="/history"
-                className={`flex items-center gap-2 hover:text-blue-600 transition ${
-                  location.pathname === "/history"
-                    ? "text-blue-600 font-semibold"
-                    : ""
+                className={`flex items-center gap-2 hover:text-indigo-400 ${
+                  location.pathname === "/history" ? "text-indigo-400" : ""
                 }`}
               >
                 <FaHistory />
@@ -51,10 +47,8 @@ export default function Header() {
 
               <Link
                 to="/profile"
-                className={`flex items-center gap-2 hover:text-blue-600 transition ${
-                  location.pathname === "/profile"
-                    ? "text-blue-600 font-semibold"
-                    : ""
+                className={`flex items-center gap-2 hover:text-indigo-400 ${
+                  location.pathname === "/profile" ? "text-indigo-400" : ""
                 }`}
               >
                 <FaUserCircle />
@@ -66,7 +60,7 @@ export default function Header() {
           {!token && (
             <Link
               to="/login"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+              className="bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded-lg text-white shadow-lg"
             >
               Login
             </Link>
