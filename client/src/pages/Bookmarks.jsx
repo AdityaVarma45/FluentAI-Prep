@@ -49,19 +49,19 @@ export default function Bookmarks() {
 
   return (
     <div className="min-h-screen pt-6">
-      <div className="max-w-4xl mx-auto w-full px-6">
+      <div className="max-w-5xl mx-auto w-full px-8 space-y-4">
         {/* HEADER */}
 
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2 text-gray-300">
             <FaBookmark className="text-blue-400" />
-            <h1 className="text-xl font-semibold tracking-wide">Bookmarks</h1>
+            <h1 className="text-lg font-semibold tracking-wide">Bookmarks</h1>
           </div>
 
           {bookmarks.length > 0 && (
             <button
               onClick={deleteAllBookmarks}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/80 text-white hover:bg-red-600 transition"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/80 text-white text-sm"
             >
               <FaTrash />
               Clear All
@@ -72,7 +72,7 @@ export default function Bookmarks() {
         {/* LOADING */}
 
         {loading && (
-          <div className="space-y-4 animate-pulse">
+          <div className="space-y-3 animate-pulse">
             {[1, 2, 3].map((i) => (
               <div key={i} className="glass p-5 rounded-xl">
                 <div className="h-4 bg-white/20 w-1/4 mb-3 rounded"></div>
@@ -89,11 +89,11 @@ export default function Bookmarks() {
           <div className="glass p-10 rounded-xl text-center">
             <FaRegSadTear className="text-4xl text-gray-400 mx-auto mb-4" />
 
-            <h2 className="text-lg font-semibold text-gray-200 mb-2">
+            <h2 className="text-base font-semibold text-gray-200 mb-2">
               No bookmarks yet
             </h2>
 
-            <p className="text-gray-400">
+            <p className="text-sm text-gray-400">
               Save AI responses to revisit them anytime.
             </p>
           </div>
@@ -103,40 +103,29 @@ export default function Bookmarks() {
 
         {!loading &&
           bookmarks.map((item) => (
-            <div key={item._id} className="glass p-5 rounded-xl mb-4">
-              {/* TOOL */}
-
-              <p className="text-xs text-blue-400 font-medium mb-3 tracking-wide flex items-center gap-1">
+            <div key={item._id} className="glass p-5 rounded-xl space-y-3">
+              <p className="text-xs text-blue-400 tracking-wide flex items-center gap-1">
                 <FaMagic />
                 {item.tool.toUpperCase()}
               </p>
 
-              {/* INPUT */}
-
-              <div className="mb-4">
+              <div>
                 <p className="text-xs text-gray-400 mb-1">Input</p>
-                <p className="text-gray-200 text-sm leading-relaxed">
+                <p className="text-sm text-gray-200 leading-relaxed tracking-wide">
                   {item.inputText}
                 </p>
               </div>
 
-              {/* RESULT */}
-
               <div>
                 <p className="text-xs text-gray-400 mb-1">Result</p>
-
-                {/* FIXED TEXT BUG HERE 👇 */}
-
-                <div className="text-gray-200 text-sm leading-relaxed whitespace-pre-wrap break-words">
+                <div className="text-sm text-gray-200 leading-relaxed tracking-wide whitespace-pre-wrap break-words">
                   {item.result}
                 </div>
               </div>
 
-              {/* ACTION */}
-
               <button
                 onClick={() => deleteBookmark(item._id)}
-                className="mt-4 flex items-center gap-2 text-sm text-red-400 hover:text-red-500"
+                className="flex items-center gap-2 text-xs text-red-400 hover:text-red-500"
               >
                 <FaTrash />
                 Delete

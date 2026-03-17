@@ -10,6 +10,8 @@ import ChatInput from "../components/ChatInput";
 export default function Home() {
   const token = localStorage.getItem("token");
 
+  const isDemo = !token || token === "demo";
+
   const [tool, setTool] = useState("grammar");
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
@@ -19,16 +21,12 @@ export default function Home() {
   const chatEndRef = useRef(null);
   const prevMessageCount = useRef(0);
 
-  /* AUTO SCROLL — ONLY WHEN NEW MESSAGE ADDED */
-
   useEffect(() => {
     if (messages.length > prevMessageCount.current) {
       chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
     prevMessageCount.current = messages.length;
   }, [messages]);
-
-  /* SEND MESSAGE */
 
   const handleSubmit = async () => {
     if (!text.trim()) return;
@@ -53,7 +51,7 @@ export default function Home() {
         { tool, text },
         {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
-        },
+        }
       );
 
       const fullText = res.data.result;
@@ -70,8 +68,6 @@ export default function Home() {
 
       setMessages((prev) => [...prev, aiMessage]);
 
-      /* STREAM RESPONSE */
-
       const words = fullText.split(" ");
       let index = 0;
 
@@ -80,7 +76,9 @@ export default function Home() {
 
         setMessages((prev) => {
           const updated = [...prev];
-          updated[updated.length - 1].content = words.slice(0, index).join(" ");
+          updated[updated.length - 1].content = words
+            .slice(0, index)
+            .join(" ");
           return updated;
         });
 
@@ -93,15 +91,11 @@ export default function Home() {
     }
   };
 
-  /* COPY */
-
   const handleCopy = (text, index) => {
     navigator.clipboard.writeText(text);
     setCopiedIndex(index);
     setTimeout(() => setCopiedIndex(null), 1500);
   };
-
-  /* CLEAN COPY */
 
   const formatCleanText = (text) => {
     return text.replace(/(.*?:)/g, "").trim();
@@ -113,10 +107,11 @@ export default function Home() {
     setTimeout(() => setCopiedIndex(null), 1500);
   };
 
-  /* BOOKMARK */
-
   const saveBookmark = async (index) => {
-    if (!token) return alert("Login to save bookmarks");
+    if (!token || token === "demo") {
+      alert("Login to save bookmarks");
+      return;
+    }
 
     const aiMsg = messages[index];
     const userMsg = messages[index - 1];
@@ -131,13 +126,13 @@ export default function Home() {
         },
         {
           headers: { Authorization: `Bearer ${token}` },
-        },
+        }
       );
 
       setMessages((prev) =>
         prev.map((msg, i) =>
-          i === index ? { ...msg, bookmarked: true } : msg,
-        ),
+          i === index ? { ...msg, bookmarked: true } : msg
+        )
       );
     } catch (error) {
       console.log(error);
@@ -146,18 +141,32 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pt-6">
-      {/* Vocabulary stays only on Home */}
       <VocabularyBar />
 
-      {/* 🔥 UPDATED WIDTH + PADDING */}
       <div className="max-w-5xl mx-auto w-full px-8">
-        {/* Tools */}
         <ToolSelector tool={tool} setTool={setTool} />
 
-        {/* Tool Description */}
-        {messages.length === 0 && <ToolDescription tool={tool} />}
+        {/* ✅ FIXED POSITION — NATURAL GAP (NO FLEX CENTER BUG) */}
+        {messages.length === 0 && (
+          <div className="mt-10 mb-16">
+            <ToolDescription tool={tool} />
+          </div>
+        )}
 
-        {/* Chat */}
+        {isDemo && messages.length > 0 && (
+          <div className="glass mb-4 px-4 py-3 rounded-xl flex items-center justify-between text-sm text-gray-300">
+            <span>
+              You're in demo mode — login to save history & bookmarks.
+            </span>
+            <button
+              onClick={() => (window.location.href = "/login")}
+              className="text-orange-400 hover:text-orange-300 transition"
+            >
+              Login →
+            </button>
+          </div>
+        )}
+
         {messages.length > 0 && (
           <ChatBox
             messages={messages}
@@ -172,7 +181,6 @@ export default function Home() {
         )}
       </div>
 
-      {/* Input */}
       <ChatInput
         text={text}
         setText={setText}

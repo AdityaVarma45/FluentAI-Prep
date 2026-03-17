@@ -11,11 +11,10 @@ export default function VocabularyBar() {
       setLoading(true);
 
       const res = await axios.get(
-        `http://localhost:5000/api/vocabulary?t=${Date.now()}`,
+        `http://localhost:5000/api/vocabulary?t=${Date.now()}`
       );
 
       const apiWords = res.data.words || [];
-
       const filled = [...apiWords];
 
       while (filled.length < 4) {
@@ -40,19 +39,28 @@ export default function VocabularyBar() {
   return (
     <div className="max-w-5xl mx-auto w-full px-8 mt-6">
       <div className="glass rounded-xl p-6 shadow-lg">
+
         <div className="flex justify-between items-center mb-5">
+
+          {/* 🟠 BOOK ICON (SOFT) */}
           <div className="flex items-center gap-2 text-gray-300 font-semibold">
-            <FaBookOpen className="text-indigo-400" />
+            <FaBookOpen className="text-orange-300 opacity-80" />
             Vocabulary Boost
           </div>
 
+          {/* 🟠 REFRESH (MATCHED SUBTLE STYLE) */}
           <button
             onClick={fetchVocabulary}
-            className="flex items-center gap-2 text-indigo-400 hover:text-indigo-300"
+            className="flex items-center gap-2 text-orange-300 opacity-80 hover:opacity-100 transition"
           >
-            <FaSyncAlt className={loading ? "animate-spin" : ""} />
-            Refresh
+            <FaSyncAlt
+              className={`text-sm ${
+                loading ? "animate-spin opacity-100" : ""
+              }`}
+            />
+            <span className="text-sm">Refresh</span>
           </button>
+
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -65,10 +73,13 @@ export default function VocabularyBar() {
                 {word.word}
               </h3>
 
-              <p className="text-sm text-gray-400">{word.meaning}</p>
+              <p className="text-sm text-gray-400">
+                {word.meaning}
+              </p>
             </div>
           ))}
         </div>
+
       </div>
     </div>
   );
