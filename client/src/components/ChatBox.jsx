@@ -11,7 +11,7 @@ export default function ChatBox({
   chatEndRef,
 }) {
   return (
-    <div className="glass rounded-xl h-[420px] overflow-y-auto p-6 mb-24">
+    <div className="glass rounded-xl h-[420px] overflow-y-auto p-6 mb-24 no-scrollbar">
       {messages.map((msg, index) => (
         <div
           key={index}
@@ -19,15 +19,18 @@ export default function ChatBox({
             msg.role === "user" ? "justify-end" : "justify-start"
           }`}
         >
-          <div className="flex gap-3 max-w-[75%]">
-            {msg.role === "ai" && <FaRobot className="text-indigo-400 mt-1" />}
+          <div className="flex gap-3 max-w-[80%]">
+            
+            {msg.role === "ai" && (
+              <FaRobot className="text-indigo-400 mt-1 shrink-0 text-lg" />
+            )}
 
             <div>
               <div
-                className={`px-4 py-3 rounded-xl ${
+                className={`px-4 py-3 rounded-xl whitespace-pre-wrap break-words leading-relaxed ${
                   msg.role === "user"
                     ? "bg-indigo-500 text-white"
-                    : "bg-white/10 border border-white/10"
+                    : "bg-white/10 border border-white/10 text-gray-200"
                 }`}
               >
                 {msg.content}
@@ -56,12 +59,18 @@ export default function ChatBox({
               </div>
             </div>
 
-            {msg.role === "user" && <FaUserCircle />}
+            {msg.role === "user" && (
+              <FaUserCircle className="shrink-0 text-lg text-gray-400" />
+            )}
           </div>
         </div>
       ))}
 
-      {loading && <div className="text-gray-400">AI is typing...</div>}
+      {loading && (
+        <div className="text-gray-400 text-sm italic">
+          AI is typing...
+        </div>
+      )}
 
       <div ref={chatEndRef} />
     </div>

@@ -53,7 +53,7 @@ export default function Home() {
         { tool, text },
         {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
-        }
+        },
       );
 
       const fullText = res.data.result;
@@ -80,9 +80,7 @@ export default function Home() {
 
         setMessages((prev) => {
           const updated = [...prev];
-          updated[updated.length - 1].content = words
-            .slice(0, index)
-            .join(" ");
+          updated[updated.length - 1].content = words.slice(0, index).join(" ");
           return updated;
         });
 
@@ -133,13 +131,13 @@ export default function Home() {
         },
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       setMessages((prev) =>
         prev.map((msg, i) =>
-          i === index ? { ...msg, bookmarked: true } : msg
-        )
+          i === index ? { ...msg, bookmarked: true } : msg,
+        ),
       );
     } catch (error) {
       console.log(error);
@@ -151,11 +149,12 @@ export default function Home() {
       {/* Vocabulary stays only on Home */}
       <VocabularyBar />
 
-      <div className="max-w-4xl mx-auto w-full px-6">
+      {/* 🔥 UPDATED WIDTH + PADDING */}
+      <div className="max-w-5xl mx-auto w-full px-8">
         {/* Tools */}
         <ToolSelector tool={tool} setTool={setTool} />
 
-        {/* Tool Description (only before chat starts) */}
+        {/* Tool Description */}
         {messages.length === 0 && <ToolDescription tool={tool} />}
 
         {/* Chat */}
@@ -173,13 +172,13 @@ export default function Home() {
         )}
       </div>
 
-      {/* INPUT BAR — CONTROLLED BY COMPONENT */}
+      {/* Input */}
       <ChatInput
         text={text}
         setText={setText}
         handleSubmit={handleSubmit}
         tool={tool}
-        hasMessages={messages.length > 0}   // 🔥 IMPORTANT FIX
+        hasMessages={messages.length > 0}
       />
     </div>
   );

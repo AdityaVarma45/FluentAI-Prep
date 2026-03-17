@@ -38,7 +38,7 @@ export default function VocabularyBar() {
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto w-full px-6 mt-6">
+    <div className="max-w-5xl mx-auto w-full px-8 mt-6">
       <div className="glass rounded-xl p-6 shadow-lg">
         <div className="flex justify-between items-center mb-5">
           <div className="flex items-center gap-2 text-gray-300 font-semibold">

@@ -16,3 +16,13 @@ body {
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
+
+/* Hide scrollbar but keep scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -8,7 +8,7 @@ export default function ToolSelector({ tool, setTool }) {
   ];
 
   return (
-    <div className="flex flex-wrap justify-center gap-3 mt-6 mb-4">
+    <div className="flex flex-wrap justify-center gap-4 mt-6 mb-4">
       {tools.map((t) => (
         <button
           key={t.id}
