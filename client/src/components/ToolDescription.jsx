@@ -4,7 +4,7 @@ export default function ToolDescription({ tool }) {
     meaning: "Learn meanings, examples, and synonyms instantly.",
     paraphrase: "Rewrite sentences professionally.",
     essay: "Get IELTS band score and feedback.",
-    tone: "Change tone to formal, friendly, or professional.",
+    translate: "Detect any language and translate it into clear English.",
   };
 
   return (

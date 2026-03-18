@@ -19,7 +19,7 @@ export default function ChatInput({
     meaning: "Enter a word to get meaning...",
     paraphrase: "Enter a sentence to rewrite...",
     essay: "Paste your essay for evaluation...",
-    tone: "Enter a sentence to change tone...",
+    translate: "Enter text in any language to translate into English...",
   };
 
   return (
@@ -35,7 +35,6 @@ export default function ChatInput({
           <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl px-4 py-3 shadow-lg">
             <FaRobot className="text-orange-400 text-sm shrink-0" />
 
-            {/* INPUT */}
             <input
               ref={inputRef}
               className="flex-1 bg-transparent outline-none text-gray-200 placeholder-gray-400 text-sm"
@@ -45,7 +44,6 @@ export default function ChatInput({
               onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             />
 
-            {/* BUTTON (INDIGO) */}
             <button
               onClick={handleSubmit}
               className="flex items-center justify-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-xl transition min-w-[80px]"

@@ -4,7 +4,7 @@ export default function ToolSelector({ tool, setTool }) {
     { id: "meaning", title: "Word Meaning" },
     { id: "paraphrase", title: "Paraphraser" },
     { id: "essay", title: "Essay Evaluator" },
-    { id: "tone", title: "Tone Changer" },
+    { id: "translate", title: "Translator" }, 
   ];
 
   return (

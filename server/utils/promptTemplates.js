@@ -57,16 +57,24 @@ Essay:
 ${text}
 `,
 
-  tone: (text) => `
-Rewrite the sentence in three different tones.
+  translate: (text) => `
+You are a professional multilingual translator.
+
+Step 1: Detect the language of the text.
+Step 2: Translate it into clear, natural English.
+Step 3: Preserve the original meaning accurately.
+
+Rules:
+- Do NOT guess randomly.
+- If text is already English, just return improved English.
+- Keep translation simple and correct.
 
 Return format:
 
-Formal:
-Friendly:
-Professional:
+Detected Language:
+Translation:
 
-Sentence:
+Text:
 ${text}
 `,
 };
