@@ -9,7 +9,6 @@ import ChatInput from "../components/ChatInput";
 
 export default function Home() {
   const token = localStorage.getItem("token");
-
   const isDemo = !token || token === "demo";
 
   const [tool, setTool] = useState("grammar");
@@ -143,24 +142,24 @@ export default function Home() {
     <div className="min-h-screen pt-6">
       <VocabularyBar />
 
-      <div className="max-w-5xl mx-auto w-full px-8">
+      <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 md:px-8">
+
         <ToolSelector tool={tool} setTool={setTool} />
 
-        {/* ✅ FIXED POSITION — NATURAL GAP (NO FLEX CENTER BUG) */}
         {messages.length === 0 && (
-          <div className="mt-10 mb-16">
+          <div className="mt-8 sm:mt-10 mb-12 sm:mb-16 px-2">
             <ToolDescription tool={tool} />
           </div>
         )}
 
         {isDemo && messages.length > 0 && (
-          <div className="glass mb-4 px-4 py-3 rounded-xl flex items-center justify-between text-sm text-gray-300">
-            <span>
+          <div className="glass mb-4 px-3 sm:px-4 py-3 rounded-xl flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between text-xs sm:text-sm text-gray-300">
+            <span className="break-words">
               You're in demo mode — login to save history & bookmarks.
             </span>
             <button
               onClick={() => (window.location.href = "/login")}
-              className="text-orange-400 hover:text-orange-300 transition"
+              className="text-orange-400 hover:text-orange-300 transition text-left sm:text-right"
             >
               Login →
             </button>

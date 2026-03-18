@@ -29,24 +29,22 @@ export default function ChatBox({
   };
 
   return (
-    <div className="glass rounded-xl h-[420px] overflow-y-auto p-6 mb-24 no-scrollbar">
+    <div className="glass rounded-xl h-[420px] overflow-y-auto px-4 sm:px-5 md:px-6 py-5 mb-24 no-scrollbar text-sm sm:text-[15px] leading-relaxed">
       {messages.map((msg, index) => (
         <div
           key={index}
-          className={`flex mb-6 ${
+          className={`flex mb-5 sm:mb-6 ${
             msg.role === "user" ? "justify-end" : "justify-start"
           }`}
         >
-          <div className="flex gap-3 max-w-[80%]">
-            {/* AI ICON */}
+          <div className="flex gap-2 sm:gap-3 max-w-[90%] sm:max-w-[80%]">
             {msg.role === "ai" && (
-              <FaRobot className="text-indigo-400 mt-1 shrink-0 text-lg" />
+              <FaRobot className="text-indigo-400 mt-1 shrink-0 text-base sm:text-lg" />
             )}
 
-            <div>
-              {/* MESSAGE */}
+            <div className="min-w-0">
               <div
-                className={`px-4 py-3 rounded-xl whitespace-pre-wrap break-words leading-relaxed ${
+                className={`px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl whitespace-pre-wrap break-words ${
                   msg.role === "user"
                     ? "bg-indigo-500 text-white"
                     : "bg-white/10 border border-white/10 text-gray-200"
@@ -55,13 +53,11 @@ export default function ChatBox({
                 {msg.content}
               </div>
 
-              {/* META */}
-              <div className="text-xs text-gray-400 mt-1 flex gap-4 items-center flex-wrap">
-                <span>{msg.time}</span>
+              <div className="text-[11px] sm:text-xs text-gray-400 mt-1 flex gap-3 sm:gap-4 items-center flex-wrap">
+                <span className="shrink-0">{msg.time}</span>
 
                 {msg.role === "ai" && (
                   <>
-                    {/* COPY */}
                     <button
                       onClick={() => handleCopy(msg.content, index)}
                       className="flex items-center gap-1 hover:text-indigo-300 transition"
@@ -70,7 +66,6 @@ export default function ChatBox({
                       {copiedIndex === index ? "Copied ✓" : "Copy"}
                     </button>
 
-                    {/* CLEAN COPY */}
                     <button
                       onClick={() => handleCleanClick(msg.content, index)}
                       className="flex items-center gap-1 hover:text-indigo-300 transition"
@@ -79,7 +74,6 @@ export default function ChatBox({
                       {cleanCopiedIndex === index ? "Copied ✓" : "Clean Copy"}
                     </button>
 
-                    {/* BOOKMARK */}
                     {token &&
                       (!msg.bookmarked ? (
                         <button
@@ -100,16 +94,17 @@ export default function ChatBox({
               </div>
             </div>
 
-            {/* USER ICON */}
             {msg.role === "user" && (
-              <FaUserCircle className="shrink-0 text-lg text-gray-400" />
+              <FaUserCircle className="shrink-0 text-base sm:text-lg text-gray-400" />
             )}
           </div>
         </div>
       ))}
 
       {loading && (
-        <div className="text-gray-400 text-sm italic">AI is typing...</div>
+        <div className="text-gray-400 text-xs sm:text-sm italic">
+          AI is typing...
+        </div>
       )}
 
       <div ref={chatEndRef} />

@@ -2,14 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ROOT + BODY FIX */
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
 /* GLOBAL THEME */
 
 body {
   @apply bg-[#0f172a] text-gray-200;
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  overflow: hidden; /* prevents double scroll */
 }
 
-/* GLASS EFFECT */
+/* GLASS EFFECT (slightly refined) */
 
 .glass {
   background: rgba(255, 255, 255, 0.05);
@@ -17,7 +29,8 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Hide scrollbar but keep scroll */
+/* SCROLLBAR HIDE */
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

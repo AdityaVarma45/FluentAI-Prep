@@ -34,32 +34,32 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4">
+    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 sm:px-6">
       <form
         onSubmit={handleLogin}
-        className="glass w-full max-w-md px-8 py-8 rounded-2xl shadow-xl"
+        className="glass w-full max-w-md px-5 sm:px-6 py-6 sm:py-7 rounded-2xl shadow-xl space-y-4"
       >
-        <h1 className="text-xl font-semibold text-gray-200 text-center mb-6">
+        <h1 className="text-lg sm:text-xl font-semibold text-gray-200 text-center">
           Login
         </h1>
 
-        <div className="flex items-center gap-2 mb-3 bg-white/5 border border-white/10 rounded-lg px-3 py-2">
-          <FaEnvelope className="text-orange-300 text-sm" />
+        <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 focus-within:border-orange-300 transition">
+          <FaEnvelope className="text-orange-300 text-sm shrink-0" />
           <input
             type="email"
             placeholder="Email"
-            className="bg-transparent outline-none text-gray-200 w-full text-sm"
+            className="bg-transparent outline-none text-gray-200 w-full text-sm placeholder-gray-400"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
-        <div className="flex items-center gap-2 mb-4 bg-white/5 border border-white/10 rounded-lg px-3 py-2">
-          <FaLock className="text-orange-300 text-sm" />
+        <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 focus-within:border-orange-300 transition">
+          <FaLock className="text-orange-300 text-sm shrink-0" />
           <input
             type="password"
             placeholder="Password"
-            className="bg-transparent outline-none text-gray-200 w-full text-sm"
+            className="bg-transparent outline-none text-gray-200 w-full text-sm placeholder-gray-400"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -68,12 +68,12 @@ export default function Login() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-2 rounded-lg transition"
+          className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-2.5 rounded-lg transition text-sm"
         >
           {loading ? "Logging in..." : "Login"}
         </button>
 
-        <p className="text-sm text-center mt-4 text-gray-400">
+        <p className="text-xs sm:text-sm text-center text-gray-400">
           Don't have an account?{" "}
           <Link
             to="/register"

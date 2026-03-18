@@ -27,17 +27,17 @@ export default function ChatInput({
       className={`${
         hasMessages
           ? "fixed bottom-0 left-0 w-full z-50 bg-black/40 backdrop-blur border-t border-white/10"
-          : "mt-20"
+          : "mt-16 sm:mt-20"
       }`}
     >
       <div className="w-full flex justify-center">
-        <div className="w-full max-w-5xl px-6 py-4">
-          <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl px-4 py-3 shadow-lg">
-            <FaRobot className="text-orange-400 text-sm shrink-0" />
+        <div className="w-full max-w-5xl px-4 sm:px-6 py-3 sm:py-4">
+          <div className="flex items-center gap-2 sm:gap-3 bg-white/5 border border-white/10 rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 shadow-lg">
+            <FaRobot className="text-orange-400 text-xs sm:text-sm shrink-0" />
 
             <input
               ref={inputRef}
-              className="flex-1 bg-transparent outline-none text-gray-200 placeholder-gray-400 text-sm"
+              className="flex-1 bg-transparent outline-none text-gray-200 placeholder-gray-400 text-xs sm:text-sm min-w-0"
               placeholder={placeholders[tool]}
               value={text}
               onChange={(e) => setText(e.target.value)}
@@ -46,10 +46,10 @@ export default function ChatInput({
 
             <button
               onClick={handleSubmit}
-              className="flex items-center justify-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-xl transition min-w-[80px]"
+              className="flex items-center justify-center gap-1 sm:gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-3 sm:px-4 py-2 rounded-xl transition min-w-[60px] sm:min-w-[80px]"
             >
-              <FaPaperPlane size={14} className="text-orange-300" />
-              <span className="text-sm">Send</span>
+              <FaPaperPlane size={12} className="text-orange-300" />
+              <span className="text-xs sm:text-sm">Send</span>
             </button>
           </div>
         </div>
