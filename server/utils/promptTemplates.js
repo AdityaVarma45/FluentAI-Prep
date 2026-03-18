@@ -27,14 +27,23 @@ Word:
 ${text}
 `,
 
-  paraphrase: (text) => `
-Rewrite the sentence using better vocabulary suitable for IELTS writing.
+  rewrite: (text) => `
+You are an expert English editor.
+
+Rewrite the sentence to improve clarity, grammar, and professionalism.
+
+Rules:
+- Do NOT change the original meaning.
+- Do NOT add new ideas.
+- Do NOT simplify too much.
+- Keep the intent exactly the same.
+- Fix grammar and improve wording only.
 
 Return format:
 
 Original Sentence:
 Improved Sentence:
-Explanation:
+Explanation (short and precise):
 
 Sentence:
 ${text}
@@ -57,22 +66,13 @@ Essay:
 ${text}
 `,
 
-  translate: (text) => `
-You are a professional multilingual translator.
-
-Step 1: Detect the language of the text.
-Step 2: Translate it into clear, natural English.
-Step 3: Preserve the original meaning accurately.
-
-Rules:
-- Do NOT guess randomly.
-- If text is already English, just return improved English.
-- Keep translation simple and correct.
+  summarize: (text) => `
+Summarize the following text clearly and concisely.
 
 Return format:
 
-Detected Language:
-Translation:
+Summary:
+Key Points:
 
 Text:
 ${text}

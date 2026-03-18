@@ -2,9 +2,9 @@ export default function ToolSelector({ tool, setTool }) {
   const tools = [
     { id: "grammar", title: "Grammar Checker" },
     { id: "meaning", title: "Word Meaning" },
-    { id: "paraphrase", title: "Paraphraser" },
+    { id: "rewrite", title: "Rewrite" },
     { id: "essay", title: "Essay Evaluator" },
-    { id: "translate", title: "Translator" }, 
+    { id: "summarize", title: "Summarizer" },
   ];
 
   return (

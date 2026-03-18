@@ -17,9 +17,9 @@ export default function ChatInput({
   const placeholders = {
     grammar: "Enter a sentence to fix grammar...",
     meaning: "Enter a word to get meaning...",
-    paraphrase: "Enter a sentence to rewrite...",
+    rewrite: "Enter a sentence to improve or rewrite...",
     essay: "Paste your essay for evaluation...",
-    translate: "Enter text in any language to translate into English...",
+    summarize: "Paste text to summarize...",
   };
 
   return (

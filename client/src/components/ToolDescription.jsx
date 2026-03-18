@@ -2,9 +2,9 @@ export default function ToolDescription({ tool }) {
   const descriptions = {
     grammar: "Fix grammar mistakes and understand the rules behind them.",
     meaning: "Learn meanings, examples, and synonyms instantly.",
-    paraphrase: "Rewrite sentences professionally.",
+    rewrite: "Improve and rewrite sentences clearly and professionally.",
     essay: "Get IELTS band score and feedback.",
-    translate: "Detect any language and translate it into clear English.",
+    summarize: "Convert long text into short and clear summaries.",
   };
 
   return (
