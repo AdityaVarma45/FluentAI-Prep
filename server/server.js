@@ -19,38 +19,41 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-/* __dirname fix for ES modules */
+// fix __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/* MIDDLEWARE */
+// middleware
 app.use(cors());
 app.use(express.json());
 
-/* API ROUTES */
+// api routes
 app.use("/api/ai", aiRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/history", historyRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/api/vocabulary", vocabularyRoutes);
 
-/* PRODUCTION: SERVE FRONTEND */
+// production: serve frontend
 if (process.env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "../client/dist");
 
   app.use(express.static(frontendPath));
 
-  app.get("/*", (req, res) => {
+  // catch-all for SPA
+  app.use((req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
 
-/* LOCAL TEST */
-app.get("/", (req, res) => {
-  res.send("API running...");
-});
+// local test route
+if (process.env.NODE_ENV !== "production") {
+  app.get("/", (req, res) => {
+    res.send("API running...");
+  });
+}
 
-/* START SERVER */
+// start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
