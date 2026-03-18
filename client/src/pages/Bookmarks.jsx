@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../utils/axios";
 import { FaBookmark, FaTrash, FaRegSadTear, FaMagic } from "react-icons/fa";
 
 export default function Bookmarks() {
@@ -10,7 +10,7 @@ export default function Bookmarks() {
 
   const fetchBookmarks = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/bookmarks", {
+      const res = await API.get("/api/bookmarks", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookmarks(res.data);
@@ -27,7 +27,7 @@ export default function Bookmarks() {
 
   const deleteBookmark = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/bookmarks/${id}`, {
+      await API.delete(`/api/bookmarks/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchBookmarks();
@@ -38,7 +38,7 @@ export default function Bookmarks() {
 
   const deleteAllBookmarks = async () => {
     try {
-      await axios.delete("http://localhost:5000/api/bookmarks", {
+      await API.delete("/api/bookmarks", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookmarks([]);
@@ -72,11 +72,7 @@ export default function Bookmarks() {
         {loading && (
           <div className="space-y-3 animate-pulse">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="glass p-4 sm:p-5 rounded-xl">
-                <div className="h-4 bg-white/20 w-1/4 mb-3 rounded"></div>
-                <div className="h-3 bg-white/10 mb-2 rounded"></div>
-                <div className="h-3 bg-white/10 w-5/6 rounded"></div>
-              </div>
+              <div key={i} className="glass p-4 sm:p-5 rounded-xl" />
             ))}
           </div>
         )}
@@ -84,11 +80,9 @@ export default function Bookmarks() {
         {!loading && bookmarks.length === 0 && (
           <div className="glass p-6 sm:p-10 rounded-xl text-center">
             <FaRegSadTear className="text-3xl sm:text-4xl text-gray-400 mx-auto mb-3 sm:mb-4" />
-
             <h2 className="text-sm sm:text-base font-semibold text-gray-200 mb-2">
               No bookmarks yet
             </h2>
-
             <p className="text-xs sm:text-sm text-gray-400">
               Save AI responses to revisit them anytime.
             </p>
@@ -97,36 +91,18 @@ export default function Bookmarks() {
 
         {!loading &&
           bookmarks.map((item) => (
-            <div
-              key={item._id}
-              className="glass p-4 sm:p-5 rounded-xl space-y-3 break-words"
-            >
-              <p className="text-[11px] sm:text-xs text-blue-400 tracking-wide flex items-center gap-1">
+            <div key={item._id} className="glass p-4 sm:p-5 rounded-xl space-y-3 break-words">
+              <p className="text-[11px] sm:text-xs text-blue-400 flex items-center gap-1">
                 <FaMagic className="text-[10px]" />
                 {item.tool.toUpperCase()}
               </p>
 
-              <div>
-                <p className="text-[11px] sm:text-xs text-gray-400 mb-1">
-                  Input
-                </p>
-                <p className="text-gray-200 leading-relaxed">
-                  {item.inputText}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-[11px] sm:text-xs text-gray-400 mb-1">
-                  Result
-                </p>
-                <div className="text-gray-200 leading-relaxed whitespace-pre-wrap break-words">
-                  {item.result}
-                </div>
-              </div>
+              <p className="text-gray-200">{item.inputText}</p>
+              <div className="text-gray-200 whitespace-pre-wrap">{item.result}</div>
 
               <button
                 onClick={() => deleteBookmark(item._id)}
-                className="flex items-center gap-2 text-[11px] sm:text-xs text-red-400 hover:text-red-500"
+                className="flex items-center gap-2 text-xs text-red-400"
               >
                 <FaTrash />
                 Delete

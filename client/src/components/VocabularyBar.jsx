@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../utils/axios";
 import { FaBookOpen, FaSyncAlt } from "react-icons/fa";
 
 export default function VocabularyBar() {
@@ -10,9 +10,7 @@ export default function VocabularyBar() {
     try {
       setLoading(true);
 
-      const res = await axios.get(
-        `http://localhost:5000/api/vocabulary?t=${Date.now()}`,
-      );
+      const res = await API.get(`/api/vocabulary?t=${Date.now()}`);
 
       const apiWords = res.data.words || [];
       const filled = [...apiWords];
@@ -39,7 +37,6 @@ export default function VocabularyBar() {
   return (
     <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 md:px-8 mt-4 sm:mt-6">
       <div className="glass rounded-xl p-4 sm:p-5 md:p-6 shadow-lg">
-        {/* HEADER */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 sm:mb-5">
           <div className="flex items-center gap-2 text-gray-300 font-medium text-sm sm:text-base">
             <FaBookOpen className="text-orange-300 opacity-80 shrink-0" />
@@ -57,7 +54,6 @@ export default function VocabularyBar() {
           </button>
         </div>
 
-        {/* WORD GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {words.map((word, i) => (
             <div
