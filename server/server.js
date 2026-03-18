@@ -36,7 +36,7 @@ app.use("/api/vocabulary", vocabularyRoutes);
 
 /* PRODUCTION: SERVE FRONTEND */
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "../frontend/dist");
+  const frontendPath = path.join(__dirname, "../client/dist");
 
   app.use(express.static(frontendPath));
 
