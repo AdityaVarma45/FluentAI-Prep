@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import API from "../utils/axios";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 
@@ -17,7 +17,7 @@ export default function Login() {
     try {
       setLoading(true);
 
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await API.post("/api/auth/login", {
         email,
         password,
       });
@@ -36,8 +36,8 @@ export default function Login() {
   return (
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 sm:px-6">
       <form
-        onSubmit={handleLogin}
         className="glass w-full max-w-md px-5 sm:px-6 py-6 sm:py-7 rounded-2xl shadow-xl space-y-4"
+        onSubmit={handleLogin}
       >
         <h1 className="text-lg sm:text-xl font-semibold text-gray-200 text-center">
           Login
@@ -48,7 +48,7 @@ export default function Login() {
           <input
             type="email"
             placeholder="Email"
-            className="bg-transparent outline-none text-gray-200 w-full text-sm placeholder-gray-400"
+            className="bg-transparent outline-none text-gray-200 w-full text-sm"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -59,17 +59,13 @@ export default function Login() {
           <input
             type="password"
             placeholder="Password"
-            className="bg-transparent outline-none text-gray-200 w-full text-sm placeholder-gray-400"
+            className="bg-transparent outline-none text-gray-200 w-full text-sm"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-2.5 rounded-lg transition text-sm"
-        >
+        <button className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-2.5 rounded-lg transition text-sm">
           {loading ? "Logging in..." : "Login"}
         </button>
 
@@ -77,7 +73,7 @@ export default function Login() {
           Don't have an account?{" "}
           <Link
             to="/register"
-            className="text-orange-300 hover:text-orange-200 transition"
+            className="text-orange-300 hover:text-orange-200"
           >
             Register
           </Link>

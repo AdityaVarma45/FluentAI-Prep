@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import axios from "axios";
+import API from "../utils/axios";
 
 import VocabularyBar from "../components/VocabularyBar";
 import ToolSelector from "../components/ToolSelector";
@@ -45,12 +45,12 @@ export default function Home() {
     try {
       setLoading(true);
 
-      const res = await axios.post(
-        "http://localhost:5000/api/ai/analyze",
+      const res = await API.post(
+        "/api/ai/analyze",
         { tool, text },
         {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
-        }
+        },
       );
 
       const fullText = res.data.result;
@@ -72,15 +72,11 @@ export default function Home() {
 
       const interval = setInterval(() => {
         index++;
-
         setMessages((prev) => {
           const updated = [...prev];
-          updated[updated.length - 1].content = words
-            .slice(0, index)
-            .join(" ");
+          updated[updated.length - 1].content = words.slice(0, index).join(" ");
           return updated;
         });
-
         if (index >= words.length) clearInterval(interval);
       }, 40);
     } catch (error) {
@@ -116,8 +112,8 @@ export default function Home() {
     const userMsg = messages[index - 1];
 
     try {
-      await axios.post(
-        "http://localhost:5000/api/bookmarks",
+      await API.post(
+        "/api/bookmarks",
         {
           tool,
           inputText: userMsg?.content,
@@ -125,13 +121,13 @@ export default function Home() {
         },
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       setMessages((prev) =>
         prev.map((msg, i) =>
-          i === index ? { ...msg, bookmarked: true } : msg
-        )
+          i === index ? { ...msg, bookmarked: true } : msg,
+        ),
       );
     } catch (error) {
       console.log(error);
@@ -143,26 +139,11 @@ export default function Home() {
       <VocabularyBar />
 
       <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 md:px-8">
-
         <ToolSelector tool={tool} setTool={setTool} />
 
         {messages.length === 0 && (
-          <div className="mt-8 sm:mt-10 mb-12 sm:mb-16 px-2">
+          <div className="mt-8 mb-12">
             <ToolDescription tool={tool} />
-          </div>
-        )}
-
-        {isDemo && messages.length > 0 && (
-          <div className="glass mb-4 px-3 sm:px-4 py-3 rounded-xl flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between text-xs sm:text-sm text-gray-300">
-            <span className="break-words">
-              You're in demo mode — login to save history & bookmarks.
-            </span>
-            <button
-              onClick={() => (window.location.href = "/login")}
-              className="text-orange-400 hover:text-orange-300 transition text-left sm:text-right"
-            >
-              Login →
-            </button>
           </div>
         )}
 
