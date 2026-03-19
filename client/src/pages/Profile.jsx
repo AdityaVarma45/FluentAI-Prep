@@ -51,15 +51,13 @@ export default function Profile() {
   useEffect(() => {
     const loadStats = async () => {
       try {
-        const historyRes = await axios.get(
-          "/api/history",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const historyRes = await axios.get("/api/history", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-        const bookmarkRes = await axios.get(
-          "/api/bookmarks",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const bookmarkRes = await axios.get("/api/bookmarks", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         const history = historyRes.data;
 
@@ -68,7 +66,9 @@ export default function Profile() {
           bookmarks: bookmarkRes.data.length,
           grammar: history.filter((i) => i.tool === "grammar").length,
           essay: history.filter((i) => i.tool === "essay").length,
-          rewrite: history.filter((i) => i.tool === "rewrite").length,
+          rewrite: history.filter(
+            (i) => i.tool === "rewrite" || i.tool === "paraphrase"
+          ).length,
           summarize: history.filter((i) => i.tool === "summarize").length,
         });
 
@@ -90,7 +90,6 @@ export default function Profile() {
   return (
     <div className="min-h-screen pt-6">
       <div className="max-w-5xl mx-auto w-full px-8 space-y-6">
-        {/* PROFILE HEADER */}
         <div className="flex items-center gap-5 glass p-5 rounded-xl">
           <img
             src={avatar}
@@ -108,7 +107,6 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* MAIN STATS */}
         <div className="grid md:grid-cols-3 gap-4">
           <div
             onClick={() => navigate("/history")}
@@ -156,29 +154,28 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* TOOL USAGE */}
         <div className="glass p-5 rounded-xl">
           <h2 className="text-sm text-gray-400 mb-4 tracking-wide">
             TOOL USAGE
           </h2>
 
           <div className="grid md:grid-cols-4 gap-4 text-sm">
-            <div className="space-y-1">
+            <div>
               <p className="text-gray-400">Grammar</p>
               <p className="text-gray-200 font-semibold">{stats.grammar}</p>
             </div>
 
-            <div className="space-y-1">
+            <div>
               <p className="text-gray-400">Essay</p>
               <p className="text-gray-200 font-semibold">{stats.essay}</p>
             </div>
 
-            <div className="space-y-1">
+            <div>
               <p className="text-gray-400">Rewrite</p>
               <p className="text-gray-200 font-semibold">{stats.rewrite}</p>
             </div>
 
-            <div className="space-y-1">
+            <div>
               <p className="text-gray-400">Summarize</p>
               <p className="text-gray-200 font-semibold">
                 {stats.summarize}
@@ -187,7 +184,6 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* TIP */}
         <div className="glass p-5 rounded-xl">
           <h2 className="text-sm text-gray-400 mb-2 tracking-wide">
             LEARNING TIP
@@ -199,7 +195,6 @@ export default function Profile() {
           </p>
         </div>
 
-        {/* LOGOUT */}
         <button
           onClick={logout}
           className="flex items-center gap-2 text-red-400 hover:text-red-500 text-sm"

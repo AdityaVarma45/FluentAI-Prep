@@ -12,7 +12,10 @@ export default function VocabularyBar() {
 
       const res = await API.get(`/api/vocabulary?t=${Date.now()}`);
 
-      const apiWords = res.data.words || [];
+      const apiWords = Array.isArray(res.data)
+        ? res.data
+        : res.data.words || [];
+
       const filled = [...apiWords];
 
       while (filled.length < 4) {
