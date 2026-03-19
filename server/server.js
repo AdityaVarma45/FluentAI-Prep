@@ -13,13 +13,11 @@ import bookmarkRoutes from "./routes/bookmarkRoutes.js";
 import vocabularyRoutes from "./routes/vocabularyRoutes.js";
 
 dotenv.config();
-
 connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// fix __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -34,13 +32,13 @@ app.use("/api/history", historyRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/api/vocabulary", vocabularyRoutes);
 
-// production: serve frontend
+// serve frontend in production
 if (process.env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "../client/dist");
 
   app.use(express.static(frontendPath));
 
-  // catch-all for SPA
+  // SPA fallback
   app.use((req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
